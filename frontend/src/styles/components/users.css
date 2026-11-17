@@ -1,0 +1,100 @@
+.users-page {
+    min-width: 0;
+}
+
+.users-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin-bottom: 20px;
+}
+
+.users-heading h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.users-count {
+    color: var(--color-text-muted);
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.users-table-wrap {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.users-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.users-table th,
+.users-table td {
+    padding: 14px 18px;
+    overflow-wrap: anywhere;
+}
+
+.users-table th {
+    background: var(--color-warning);
+    color: var(--color-accent);
+    font-weight: 400;
+}
+
+.users-table th:first-child {
+    width: 35%;
+}
+
+.users-table tbody tr + tr {
+    border-top: 1px solid var(--color-border);
+}
+
+.users-table tbody tr:hover {
+    background: var(--color-neutral-50);
+}
+
+.users-name {
+    color: var(--color-accent);
+    font-weight: 400;
+}
+
+.users-message {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 16px;
+}
+
+.users-error {
+    color: var(--color-danger);
+}
+
+.users-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .users-table th,
+    .users-table td {
+        padding: 12px;
+    }
+
+    .users-table th:first-child {
+        width: 40%;
+    }
+}

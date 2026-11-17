@@ -1,0 +1,32 @@
+.clients-grid {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.6fr);
+    gap: 12px;
+    align-items: center;
+}
+
+.clients-head {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: var(--color-warning);
+    color: var(--color-accent);
+    font-weight: 400;
+}
+
+.clients-row {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-weight: 300;
+    font-size: 16px;
+    transition:
+        border-color var(--speed-fast),
+        background var(--speed-fast);
+}
+
+.clients-row:hover {
+    border-color: var(--color-primary);
+    background: #f8fbfd;
+}
