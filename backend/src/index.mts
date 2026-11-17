@@ -10,7 +10,11 @@ const app = express()
 const frontendOrigin = process.env.FRONTEND_URL ?? 'http://localhost:5173'
 
 app.use(cors({ origin: frontendOrigin, credentials: true }))
+//registration only for admin user
+app.post('/api/auth/sign-up/email', requireAdmin)
+
 app.all('/api/auth/*splat', toNodeHandler(auth))
+
 app.use(express.json())
 
 async function requireAuth(req: Request, res: Response, next: NextFunction) {
