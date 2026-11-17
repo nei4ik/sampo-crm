@@ -12,7 +12,7 @@ if (!secret?.trim()) {
 export const prisma = new PrismaClient()
 
 export const auth = betterAuth({
-	database: prismaAdapter(prisma, { provider: 'sqlite' }),
+	database: prismaAdapter(prisma, { provider: 'postgresql' }),
 	secret,
 	baseURL: process.env.BETTER_AUTH_URL ?? `http://localhost:${process.env.PORT ?? '3001'}`,
 	trustedOrigins: [process.env.FRONTEND_URL ?? 'http://localhost:5173'],
