@@ -44,18 +44,14 @@ async function requireAdmin(
         })
 
         if (!session) {
-			setTimeout(() => {
-				res.status(401).json({ error: 'Unauthorized' })
-			}, 3000)
+			res.status(401).json({ error: 'Unauthorized' })
             return
         }
 
         const adminId = process.env.ADMIN_USER_ID?.trim()
 
         if (!adminId || session.user.id !== adminId) {
-            setTimeout(() => {
-                res.status(403).json({ error: 'Forbidden' })
-            }, 3000)
+            res.status(403).json({ error: 'Forbidden' })
             return
         }
 
