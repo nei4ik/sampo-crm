@@ -167,7 +167,7 @@ function ClientsPage() {
                         <span>Laskutusosoite</span>
                     </div>
                     {isLoading && <p role="status">Ladataan asiakkaita...</p>}
-                    <ClientsList customerList={customerList} setIsActive={setIsActive} />
+                    <ClientsList customerList={customerList} loadCustomers={loadCustomers} />
                 </div>
             </div>
         </MainContent>
