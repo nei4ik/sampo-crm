@@ -1,153 +1,174 @@
-# CRM — Business Trainer (React + TypeScript + Vite)
+# CRM – asiakasrekisterijärjestelmä
 
-## 🇷🇺 Русский язык
+## Projektin kuvaus
 
-### Описание проекта
-Это CRM-система для управления клиентами, построенная на стеке **React 19**, **TypeScript** и **Vite**. Проект использует **Prisma ORM v6** с SQLite для персистентности данных. Авторизация реализована через **Argon2** (хеширование паролей) и **JWT-токены**.
+CRM-sovellus asiakastietojen hallintaan. Käyttöliittymä on toteutettu Reactilla, TypeScriptillä ja Vitellä. Express-pohjainen taustapalvelin tarjoaa API-rajapinnan, ja tiedot tallennetaan PostgreSQL-tietokantaan Prisma ORM:n avulla.
 
-### 📁 Структура проекта
-```
+Kirjautuminen ja istuntojen hallinta on toteutettu Better Authilla. Aiempi SQLite-tietokanta ja oma JWT-pohjainen kirjautumisratkaisu on korvattu PostgreSQL:llä ja Better Authilla.
+
+## Teknologiat
+
+| Teknologia | Käyttötarkoitus |
+|------------|----------------|
+| React | Käyttöliittymä |
+| TypeScript | Tyypitetty sovelluskoodi |
+| Vite | Frontendin kehityspalvelin ja tuotantokokoaminen |
+| React Router | Sivujen reititys |
+| Tailwind CSS | Käyttöliittymän tyylit |
+| Express | Backend ja API-reitit |
+| Better Auth | Kirjautuminen, uloskirjautuminen ja istuntojen hallinta |
+| Prisma ORM | Tietokantakyselyt ja tietomalli |
+| PostgreSQL / Prisma Postgres | Pysyvä tietojen tallennus |
+| Vercel | Sovelluksen julkaisu |
+
+Tarkat pakettiversiot löytyvät frontendin ja backendin `package.json`-tiedostoista.
+
+## Projektin rakenne
+
+```text
 frontend/
 ├── src/
-│   ├── components/          # Header, Footer, Menu
-│   ├── features/            # ClientsList
-│   ├── lib/                 # Auth конфигурация
-│   ├── pages/
-│   │   ├── ClientsPage.tsx  # Форма добавления + список клиентов
-│   │   ├── LoginPage.tsx    # Страница входа
-│   │   └── RegisterPage.tsx # Регистрация пользователя
-│   ├── routes/              # AppRouter (защита маршрутов)
-│   ├── styles/              # tokens.css, base.css, layout.css, components/*
-│   ├── App.tsx              # Точка входа + BrowserRouter
-│   └── main.tsx             # Рендер приложения
-├── package.json             # Зависимости
-└── vite.config.ts           # Прокси на backend: /api → localhost:3001
-```
-Схема БД и сервер API находятся в каталоге `backend/`.
+│   ├── components/          # Yhteiset käyttöliittymäkomponentit
+│   ├── features/            # Asiakashallinnan komponentit
+│   ├── lib/                 # Auth-asiakkaan asetukset
+│   ├── pages/               # Asiakas-, kirjautumis- ja rekisteröintisivut
+│   ├── routes/              # Reititys ja suojatut sivut
+│   ├── styles/              # Sovelluksen tyylit
+│   ├── App.tsx
+│   └── main.tsx
+├── package.json
+└── vite.config.ts
 
-### 🛠 Технологии
-| Пакет | Версия | Назначение |
-|-------|--------|------------|
-| `react` | ^19.2.8 | UI-фреймворк |
-| `react-router` | ^8.4.0 | Роутинг (BrowserRouter, Link, Navigate) |
-| `typescript` | ~6.0.2 | Статическая типизация |
-| `vite` | ^8.3.0 | Бандлер + HMR |
-| `tailwindcss` | ^4.3.3 | Стилизация (семантические токены) |
-| `@prisma/client` | ^6.19.3 | ORM для работы с БД |
+backend/
+├── src/                     # API, autentikointi ja alustus
+│   └── init-db.ts           # Ylläpitäjätilin alustaminen
+└── package.json
 
-### 🔐 Авторизация
-- **Регистрация**: `POST /api/auth/register` → `{username, password}`
-- **Вход**: `POST /api/auth/login` → `{token, username}` (JWT 24 ч)
-- **Хеширование**: Argon2 (одностороннее, с солью)
-- **Защита маршрутов**: `/asiakkaat` требует валидный токен
-- Для создания тестового пользователя командой `npm run db:init` задайте `ADMIN_PASSWORD` (не менее 8 символов) в окружении backend. Пароль не записывается в логи.
-
-### 📡 API (Backend: http://localhost:3001)
-| Метод | Путь | Описание |
-|-------|------|----------|
-| `GET` | `/api/customers` | Список клиентов (защита JWT) |
-| `POST` | `/api/customers` | Создать клиента |
-| `PUT` | `/api/customers/:id` | Обновить клиента |
-| `DELETE` | `/api/customers/:id` | Удалить клиента |
-| `POST` | `/api/auth/register` | Регистрация пользователя |
-| `POST` | `/api/auth/login` | Вход и получение токена |
-
-В интерфейсе сейчас доступны просмотр и добавление клиентов. Редактирование и удаление доступны через API, но пока не реализованы в интерфейсе.
-
-### 🚀 Запуск
-```bash
-# Backend (терминал 1)
-cd CRM/backend
-npm run dev          # http://localhost:3001
-
-# Frontend (терминал 2)
-cd CRM/frontend
-npm run dev          # http://localhost:5173
+vercel.json                  # Vercel-julkaisun asetukset
 ```
 
-### 📦 Сборка для продакшена
-```bash
-npm run build        # создаёт dist/
-npm run preview      # локальный сервер для проверки сборки
-```
+Tietokannan Prisma-skeema sijaitsee backendin hakemistossa.
 
----
+## Kirjautuminen ja käyttöoikeudet
 
-## 🇫🇮 Suomi
+- Better Auth hallitsee kirjautumista ja käyttäjäistuntoja.
+- Kirjautuminen vaaditaan suojattujen sivujen käyttämiseen.
+- Julkinen rekisteröityminen on suljettu. Uusien käyttäjien luominen on rajattu ylläpitäjälle.
+- Ylläpitäjän käyttöoikeus määritetään vertaamalla käyttäjän tunnistetta `ADMIN_USER_ID`-ympäristömuuttujaan.
+- Käyttäjähallinnan `/api/users`-reitit on suojattu ylläpitäjän oikeuksilla.
+- Vanhoja `/api/auth/register`- ja `/api/auth/login`-reittejä ei käytetä tässä ohjeessa: autentikointi tapahtuu Better Authin kautta.
 
-### Projektin kuvaus
-Tämä on asiakasrekisterijärjestelmä (CRM), joka on rakennettu **React 19**, **TypeScript** ja **Vite** -teknologioilla. Projektissa käytetään **Prisma ORM v6**:ta SQLite-tietokannan kanssa datan pysyvän säilyttämiseen. Kirjautuminen toteutetaan **Argon2**-hashauksella (salasanojen turvaava hashaus) ja **JWT-tokeneilla**.
+### Better Authin reittejä
 
-### 📁 Projektin rakenne
-```
-frontend/
-├── src/
-│   ├── components/          # Header, Footer, Menu
-│   ├── features/            # ClientsList
-│   ├── lib/                 # Auth konfigurointi
-│   ├── pages/
-│   │   ├── ClientsPage.tsx  # Asiakkien lisääminen + lista
-│   │   ├── LoginPage.tsx    # Kirjautumissivu
-│   │   └── RegisterPage.tsx # Käyttäjän rekisteröinti
-│   ├── routes/              # AppRouter (reittien suojelu)
-│   ├── styles/              # tokens.css, base.css, layout.css, components/*
-│   ├── App.tsx              # Entry point + BrowserRouter
-│   └── main.tsx             # Sovelluksen renderöinti
-├── package.json             # Riippuvuudet
-└── vite.config.ts           # Proxy backendille: /api → localhost:3001
-```
-Tietokannan skeema ja API-palvelin sijaitsevat `backend/`-hakemistossa.
+| Metodi | Polku | Kuvaus |
+|--------|-------|--------|
+| `GET` | `/api/auth/get-session` | Nykyisen istunnon tarkistaminen |
+| `POST` | `/api/auth/sign-out` | Uloskirjautuminen |
+| `POST` | `/api/auth/sign-up/email` | Käyttäjän luominen; käyttö rajattu ylläpitäjälle |
 
-### 🛠 Teknologiat
-| Paketti | Versio | Käyttötarkoitus |
-|---------|--------|-----------------|
-| `react` | ^19.2.8 | UI-kehys |
-| `react-router` | ^8.4.0 | Reittaus (BrowserRouter, Link, Navigate) |
-| `typescript` | ~6.0.2 | Tyypitys |
-| `vite` | ^8.3.0 | Bundler + HMR |
-| `tailwindcss` | ^4.3.3 | Tyylit (semanttiset tokenit) |
-| `@prisma/client` | ^6.19.3 | Tietokantatyön ORM |
+## Asiakkaiden API
 
-### 🔐 Kirjautuminen
-- **Rekisteröinti**: `POST /api/auth/register` → `{username, password}`
-- **Kirjautuminen**: `POST /api/auth/login` → `{token, username}` (JWT 24 h)
-- **Hashaus**: Argon2 (yksisuuntainen, suolattu)
-- **Reittien suojaus**: `/asiakkaat` vaatii voimassa olevan tokenin
-- Aseta backendin ympäristömuuttuja `ADMIN_PASSWORD` (vähintään 8 merkkiä) ennen `npm run db:init` -komennon suorittamista. Salasanaa ei tulosteta lokiin.
+Paikallinen backend: `http://localhost:3001`.
 
-### 📡 API (Backend: http://localhost:3001)
-| Verbi | Polku | Kuvaus |
-|-------|-------|--------|
-| `GET` | `/api/customers` | Asiakkien lista (JWT-suojaus) |
+| Metodi | Polku | Kuvaus |
+|--------|-------|--------|
+| `GET` | `/api/customers` | Asiakkaiden hakeminen |
 | `POST` | `/api/customers` | Uuden asiakkaan luominen |
 | `PUT` | `/api/customers/:id` | Asiakkaan päivittäminen |
 | `DELETE` | `/api/customers/:id` | Asiakkaan poistaminen |
-| `POST` | `/api/auth/register` | Käyttäjän rekisteröinti |
-| `POST` | `/api/auth/login` | Kirjautuminen ja tokenin saanti |
 
-Käyttöliittymässä voi tällä hetkellä tarkastella ja lisätä asiakkaita. Muokkaus ja poistaminen ovat saatavilla API:ssa, mutta niitä ei vielä ole käyttöliittymässä.
+Käyttöliittymä tukee asiakkaiden tarkastelua ja lisäämistä. Asiakkaiden muokkaamisen ja poistamisen API-reitit on kuvattu yllä; niiden käyttöliittymätoteutus ei kuulu tähän toimintokuvaukseen.
 
-### 🚀 Käynnistäminen
-```bash
-# Backend (terminaali 1)
-cd CRM/backend
-npm run dev          # http://localhost:3001
+## Ympäristömuuttujat
 
-# Frontend (terminaali 2)
-cd CRM/frontend
-npm run dev          # http://localhost:5173
+Määritä tarvittavat muuttujat backendin paikalliseen ympäristöön ja tuotannossa Vercelin projektiasetuksiin.
+
+| Muuttuja | Kuvaus |
+|----------|--------|
+| `DATABASE_URL` | PostgreSQL-tietokannan yhteysosoite |
+| `BETTER_AUTH_SECRET` | Better Authin salainen avain |
+| `BETTER_AUTH_URL` | Autentikointipalvelun perusosoite |
+| `FRONTEND_URL` | Frontendin sallittu alkuperäosoite |
+| `ADMIN_USER_ID` | Ylläpitäjän käyttäjätunniste tietokannassa |
+| `ADMIN_PASSWORD` | Alustusskriptin käyttämä ylläpitäjän salasana |
+
+### Paikallinen kehitys
+
+```dotenv
+DATABASE_URL=POSTGRESQL_YHTEYSOSOITE
+BETTER_AUTH_SECRET=OMA_PITKA_SATUNNAINEN_SALAINEN_AVAIN
+BETTER_AUTH_URL=http://localhost:3001
+FRONTEND_URL=http://localhost:5173
+ADMIN_PASSWORD=TAYTA_VAHVA_SALASANA
 ```
 
-### 📦 Tuotantokokoaminen
-```bash
-npm run build        # luo dist/-hakemiston
-npm run preview      # tuotannon testaus paikallisella palvelimella
+Aseta `ADMIN_USER_ID` ylläpitäjätilin luomisen jälkeen.
+
+### Tuotanto
+
+Kun frontend ja API toimivat saman verkkotunnuksen alla:
+
+```dotenv
+BETTER_AUTH_URL=https://sampoexample.vercel.app
+FRONTEND_URL=https://sampoexample.vercel.app
 ```
 
----
+Better Authin `trustedOrigins`-asetuksessa pitää sallia sovelluksen käyttämät alkuperäosoitteet. Pelkkä ympäristömuuttujan lisääminen ei muuta sallittuja osoitteita, ellei palvelimen asetuskoodi käytä sitä.
 
-## 📝 Huomautuksia (Notes)
+## Paikallinen käynnistäminen
 
-- **SQLite** käytetään kevyenä tietokantana kehityksessä. Tuotannossa voit vaihtaa PostgreSQLiin tai MySQL:ään muokkaamalla `prisma/schema.prisma`.
-- **JWT-tokenit** tallennetaan `localStorage`:hen. Muista poistaa tokenit tuotannossa (esim. `httpOnly`-cookieiden kautta).
-- **Argon2** on suositeltu salasanojen hashausmenetelmä (bcrypt vaihtoehto).
+Suorita komennot repositorion juuresta kahdessa eri terminaalissa.
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Backend: `http://localhost:3001`.
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend: `http://localhost:5173`.
+
+Viten kehitysvälityspalvelin ohjaa `/api`-pyynnöt paikalliselle backendille.
+
+### Ylläpitäjätilin alustaminen
+
+Kun tietokantataulut on luotu ja tarvittavat ympäristömuuttujat asetettu, suorita backendin hakemistossa:
+
+```bash
+npm run db:init
+```
+
+Aseta tämän jälkeen luodun ylläpitäjän tunniste `ADMIN_USER_ID`-muuttujaan.
+
+## Frontendin tuotantokokoaminen
+
+```bash
+cd frontend
+npm run build
+npm run preview
+```
+
+`npm run build` luo frontendin tuotantoversion `dist/`-hakemistoon. `npm run preview` on frontendin paikallinen esikatselu; backend on käynnistettävä erikseen.
+
+## Julkaisu Vercelissä
+
+Projektin juuressa oleva `vercel.json` sisältää julkaisun asetukset. Julkaistussa sovelluksessa frontend ja `/api`-rajapinta toimivat saman verkkotunnuksen kautta.
+
+Määritä tuotannon ympäristömuuttujat Vercelissä. Älä lisää salasanoja, tietokantayhteyden tunnuksia tai salaisia avaimia versionhallintaan.
+
+## Lähdekoodi
+
+Sovelluksen lähdekoodi löytyy GitHub-repositoriosta. Lisää tähän ajantasainen linkki repositorion uudelleennimeämisen jälkeen:
+
+`https://github.com/nei4ik/sampo-crm`
