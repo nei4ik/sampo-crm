@@ -74,10 +74,6 @@ function LoginPage() {
 						Kirjaudu sisään
 					</button>
 				</form>
-
-				<p className="auth-switch">
-					Ei vielä tiliä? <Link to="/register" className="auth-link">Rekisteröidy</Link>
-				</p>
 			</div>
 		</section>
 	)
