@@ -1,6 +1,6 @@
 import type { CustomerData } from "../pages/ClientsPage";
 
-export const ClientsList = ({ customerList, setIsActive }: { customerList: CustomerData[], setIsActive: (active: boolean) => void }) => {
+export const ClientsList = ({ customerList, loadCustomers }: { customerList: CustomerData[], loadCustomers: () => void }) => {
     const deleteClient = async (id: number) => {
         try {
             const response = await fetch(`/api/customers/${id}`, {
@@ -13,7 +13,7 @@ export const ClientsList = ({ customerList, setIsActive }: { customerList: Custo
         } catch (error) {
             console.error('Error deleting client:', error);
         }
-        setIsActive(true);
+        loadCustomers();
     };
     return (
         <div>
